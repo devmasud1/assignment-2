@@ -15,8 +15,21 @@ const getAllProduct = async () => {
 
 //get single product by id
 const getSingleProductFromDB = async (id: string) => {
-  console.log(id);
   const result = await Product.findById(id);
+  return result;
+};
+
+//update single product
+// const updateProduct = async (id: string) => {
+//   const result = await Product.findById(id);
+//   return result;
+// };
+
+// update single product
+const updateProduct = async (id: string, updatedFields: Partial<TProduct>) => {
+  const result = await Product.findByIdAndUpdate(id, updatedFields, {
+    new: true,
+  });
   return result;
 };
 
@@ -24,4 +37,5 @@ export const ProductServices = {
   createProduct,
   getAllProduct,
   getSingleProductFromDB,
+  updateProduct,
 };
