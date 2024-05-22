@@ -2,10 +2,23 @@ import { Request, Response } from "express";
 import { OrderServices } from "./order.service";
 import { ProductServices } from "../product/product.service";
 import mongoose from "mongoose";
+import orderValidationSchema from "./order.validation";
 
 const createOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body;
+
+    const { error: validationError } = orderValidationSchema.validate(
+      orderData,
+      { abortEarly: false }
+    );
+    if (validationError) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation error",
+        error: validationError.details.map((err) => err.message),
+      });
+    }
 
     // Check if the productId exists in DB
     const product = await ProductServices.getSingleProductFromDB(
