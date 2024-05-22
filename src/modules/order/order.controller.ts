@@ -20,26 +20,36 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
-const getAllOrder = async (req: Request, res: Response) => {
+const getAllOrderOrByEmail = async (req: Request, res: Response) => {
   try {
-    const result = await Order.find();
+    const { email } = req.query;
+    let result;
+    if (email) {
+      if (typeof email !== "string") {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid email provided in the query parameter.",
+        });
+      }
+      result = await OrderServices.getOrderByEmail(email);
+    } else {
+      result = await OrderServices.getAllOrderFromDB();
+    }
     res.json({
       success: true,
-      message: "Orders fetched successfully!",
+      message: "Orders fetched successfully for user email!",
       data: result,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Something went wrong!",
+      message: "Something went wrong",
       error,
     });
   }
 };
 
-const getAllProduct = async () => {};
-
 export const OrderController = {
   createOrder,
-  getAllOrder,
+  getAllOrderOrByEmail,
 };
