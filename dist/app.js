@@ -11,6 +11,14 @@ const config_1 = __importDefault(require("./config"));
 const app = (0, express_1.default)();
 //parser
 app.use(express_1.default.json());
+// root route message
+app.get("/", (req, res) => {
+    res.json({
+        success: true,
+        message: "Welcome to the Next Level Assignment-2!",
+    });
+});
+//routes
 app.use("/api/products", product_router_1.ProductRoutes);
 app.use("/api/orders", order_routes_1.OrderRoutes);
 //unmatched routes

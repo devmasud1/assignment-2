@@ -1,11 +1,23 @@
 import { Request, Response } from "express";
 import { ProductServices } from "./product.service";
+import productValidationSchema from "./product.validation";
 
 //created new product
 const createProduct = async (req: Request, res: Response) => {
   try {
-    const productData = req.body;
+    const { product: productData } = req.body;
+
+    const { error } = productValidationSchema.validate(productData);
+
     const result = await ProductServices.createProduct(productData);
+
+    if (error) {
+      res.status(500).json({
+        success: false,
+        message: "Validation error!",
+        error,
+      });
+    }
 
     res.json({
       success: true,
@@ -69,11 +81,24 @@ const getSingleProduct = async (req: Request, res: Response) => {
   }
 };
 
-//update single product
+// update single product
 const updateSingleProduct = async (req: Request, res: Response) => {
   try {
     const { productId } = req.params;
     const updatedFields = req.body;
+
+    // Validate the incoming data against the product validation schema
+    const { error: validationError } = productValidationSchema.validate(
+      updatedFields,
+      { abortEarly: false }
+    );
+    if (validationError) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation error",
+        error: validationError.details.map((err) => err.message),
+      });
+    }
 
     if (!productId) {
       return res.status(400).json({
@@ -103,7 +128,7 @@ const updateSingleProduct = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: "Something went wrong!",
-      error,
+      error: error.message,
     });
   }
 };
