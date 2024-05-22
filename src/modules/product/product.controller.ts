@@ -22,14 +22,23 @@ const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-//get all product
+//get all product & search product by name
 const getAllProduct = async (req: Request, res: Response) => {
   try {
-    const result = await ProductServices.getAllProduct();
+    const { searchTerm } = req.query;
+
+    let result;
+    if (searchTerm) {
+      result = await ProductServices.searchProductFromDB(searchTerm as string);
+    } else {
+      result = await ProductServices.getAllProduct();
+    }
 
     res.json({
       success: true,
-      message: "Products fetched successfully!",
+      message: searchTerm
+        ? `Products matching search term '${searchTerm}' fetched successfully!`
+        : "Products fetched successfully!",
       data: result,
     });
   } catch (error) {
