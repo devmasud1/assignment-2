@@ -8,6 +8,15 @@ const app = express();
 //parser
 app.use(express.json());
 
+// root route message
+app.get("/", (req: Request, res: Response) => {
+  res.json({
+    success: true,
+    message: "Welcome to the Next Level Assignment-2!",
+  });
+});
+
+//routes
 app.use("/api/products", ProductRoutes);
 app.use("/api/orders", OrderRoutes);
 
