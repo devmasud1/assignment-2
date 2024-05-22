@@ -1,6 +1,12 @@
 import { TProduct } from "./product.interface";
 import { Product } from "./product.model";
 
+//check productExists
+const productExists = async (productId: string) => {
+  const product = await Product.findById(productId);
+  return !!product;
+};
+
 //created new product
 const createProduct = async (payLoad: TProduct) => {
   const result = await Product.create(payLoad);
@@ -48,4 +54,5 @@ export const ProductServices = {
   updateProduct,
   deleteProductFromDB,
   searchProductFromDB,
+  productExists,
 };
