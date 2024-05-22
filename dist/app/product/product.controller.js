@@ -8,14 +8,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductController = void 0;
 const product_service_1 = require("./product.service");
+const product_validation_1 = __importDefault(require("./product.validation"));
 //created new product
 const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const productData = req.body;
+        const { product: productData } = req.body;
+        const { error } = product_validation_1.default.validate(productData);
         const result = yield product_service_1.ProductServices.createProduct(productData);
+        if (error) {
+            res.status(500).json({
+                success: false,
+                message: "Validation error!",
+                error,
+            });
+        }
         res.json({
             success: true,
             message: "Product created successfully!",
@@ -76,11 +88,20 @@ const getSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, functio
         });
     }
 });
-//update single product
+// update single product
 const updateSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { productId } = req.params;
         const updatedFields = req.body;
+        // Validate the incoming data against the product validation schema
+        const { error: validationError } = product_validation_1.default.validate(updatedFields, { abortEarly: false });
+        if (validationError) {
+            return res.status(400).json({
+                success: false,
+                message: "Validation error",
+                error: validationError.details.map((err) => err.message),
+            });
+        }
         if (!productId) {
             return res.status(400).json({
                 success: false,

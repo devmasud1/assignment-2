@@ -16,9 +16,18 @@ exports.OrderController = void 0;
 const order_service_1 = require("./order.service");
 const product_service_1 = require("../product/product.service");
 const mongoose_1 = __importDefault(require("mongoose"));
+const order_validation_1 = __importDefault(require("./order.validation"));
 const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orderData = req.body;
+        const { error: validationError } = order_validation_1.default.validate(orderData, { abortEarly: false });
+        if (validationError) {
+            return res.status(400).json({
+                success: false,
+                message: "Validation error",
+                error: validationError.details.map((err) => err.message),
+            });
+        }
         // Check if the productId exists in DB
         const product = yield product_service_1.ProductServices.getSingleProductFromDB(orderData.productId);
         if (!product) {

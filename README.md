@@ -1,10 +1,10 @@
-# Next Level Assignment-2
+## Next Level Assignment-2
 
-## This project is a Node.js application that provides an API for managing products and orders.
+### This project is a Node.js application that provides an API for managing products and orders.
 
 [![Live Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://assignment2-fawn-seven.vercel.app/)
 
-## Features
+### Features
 
 - CRUD operations for products
 - Order creation and fetching
@@ -12,7 +12,7 @@
 - input validation using Joi
 - Custom error handling for not found routes
 
-## Installation
+### Installation
 
 1. Clone the repository:
 2. Install the dependencies:
@@ -20,7 +20,7 @@
 4. Start the server:
 
 ```sh
-git clone https://github.com/yourusername/assignment2.git
+git clone https://github.com/devmasud1/assignment-2.git
 cd assignment2
 npm install
 npm run start:dev
@@ -32,6 +32,12 @@ For production environments...
 PORT=5000
 DB_URL=your_mongodb_connection_string
 ```
+
+Run for locally
+[localhost:](http://localhost:5000/):(http://localhost:5000/)
+
+Run for production
+[live-ste:](https://assignment2-fawn-seven.vercel.app/):(https://assignment2-fawn-seven.vercel.app/)
 
 ## API Endpoints
 
