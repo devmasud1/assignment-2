@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { Product } from "./product.model";
 import { ProductServices } from "./product.service";
 
 //created new product
@@ -112,14 +111,20 @@ const updateSingleProduct = async (req: Request, res: Response) => {
 //delete a single product
 const deleteProduct = async (req: Request, res: Response) => {
   try {
-    const { productId } = req.params;
-    const result = await ProductServices.deleteProductFromDB(productId);
+    // const { productId } = req.params;
+    // const result = await ProductServices.deleteProductFromDB(productId);
     res.status(200).json({
       success: true,
       message: "Product deleted successfully!",
       data: null,
     });
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong!",
+      error,
+    });
+  }
 };
 
 export const ProductController = {

@@ -5,7 +5,6 @@ const orderSchema = new Schema<TOrder>({
   email: {
     type: String,
     required: true,
-    match: [/.+\@.+\..+/, "Please enter a valid email address"],
   },
   productId: {
     type: String,

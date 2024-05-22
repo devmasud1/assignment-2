@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
-import { ProductRoutes } from "./modules/product/product.router";
-import { OrderRoutes } from "./modules/order/order.routes";
-import notFoundRoute from "./modules/not.found";
+import { ProductRoutes } from "./app/product/product.router";
+import { OrderRoutes } from "./app/order/order.routes";
+import notFoundRoute from "./app/not.found";
 import config from "./config";
 const app = express();
 
