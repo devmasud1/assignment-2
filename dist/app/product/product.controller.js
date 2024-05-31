@@ -18,16 +18,16 @@ const product_validation_1 = __importDefault(require("./product.validation"));
 //created new product
 const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { product: productData } = req.body;
+        const productData = req.body;
         const { error } = product_validation_1.default.validate(productData);
-        const result = yield product_service_1.ProductServices.createProduct(productData);
         if (error) {
-            res.status(500).json({
+            return res.status(400).json({
                 success: false,
                 message: "Validation error!",
-                error,
+                error: error.details.map((detail) => detail.message),
             });
         }
+        const result = yield product_service_1.ProductServices.createProduct(productData);
         res.json({
             success: true,
             message: "Product created successfully!",

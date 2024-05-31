@@ -5,19 +5,19 @@ import productValidationSchema from "./product.validation";
 //created new product
 const createProduct = async (req: Request, res: Response) => {
   try {
-    const { product: productData } = req.body;
+    const productData = req.body;
 
     const { error } = productValidationSchema.validate(productData);
 
-    const result = await ProductServices.createProduct(productData);
-
     if (error) {
-      res.status(500).json({
+      return res.status(400).json({
         success: false,
         message: "Validation error!",
-        error,
+        error: error.details.map((detail) => detail.message),
       });
     }
+
+    const result = await ProductServices.createProduct(productData);
 
     res.json({
       success: true,
